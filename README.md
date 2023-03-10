@@ -15,5 +15,7 @@ OPENVINO face detection model + DeepSORT:
 OPENVINO face detection model + FaceNet 512 + age gender retail OPENVINO model.
 ![](https://github.com/nguyentrongvan/OpenVINOTrackFace/blob/develop/data/demo/demo_tracking_02.gif)
 
-
-
+# References:
+[1] OPENVINO toolkit: https://docs.openvino.ai/latest/home.html  
+[2] ByteTrack: https://github.com/ifzhang/ByteTrack  
+[3] Deepface framework: https://github.com/serengil/deepface
