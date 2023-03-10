@@ -8,12 +8,12 @@ OPENVINO face detection model + ByteTrack
 
 
 OPENVINO face detection model + DeepSORT:
-![](https://github.com/nguyentrongvan/OpenVINOTrackFace/blob/develop/data/demo/demo_tracking_02.gif)
+![](https://github.com/nguyentrongvan/OpenVINOTrackFace/blob/develop/data/demo/demo_regconition_01.gif)
 
 
 ### 2. Detect, recognition and analysis:
 OPENVINO face detection model + FaceNet 512 + age gender retail OPENVINO model.
-![](https://github.com/nguyentrongvan/OpenVINOTrackFace/blob/develop/data/demo/demo_recognition_01.gif)
+![](https://github.com/nguyentrongvan/OpenVINOTrackFace/blob/develop/data/demo/demo_tracking_02.gif)
 
 
 
