@@ -1,4 +1,7 @@
 # FaceMoudule
-Detecting, embedding, storing and matching
-pyinstaller --hidden-import=openvino.inference_engine.constants --name=fast_face_moudule_api --onefile --windowed run.py
-pyinstaller fast_face_moudule_api.spec
+Detecting, embedding, storing and matching  
+
+# Demo result:
+### 1. Detect and tracking:
+![](https://github.com/nguyentrongvan/OpenVINOTrackFace/data/demo/demo_tracking_01.gif)
+
