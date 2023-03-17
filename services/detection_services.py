@@ -39,3 +39,17 @@ class FaceDetectionService:
         outputs = analyzer.inference(face_image)
         agegender = analyzer.map_agegender(outputs)
         return agegender
+    
+    @staticmethod
+    def get_pose(face_image, estimator):
+        '''
+        Input: face is cropped from image
+        Output: yaw, picth, roll
+        '''
+
+        if estimator == None:
+            raise 'Head pose model is not initialize'
+        
+        outputs = estimator.inference(face_image)
+        euler_angle = estimator.get_pose_angle(outputs)
+        return euler_angle

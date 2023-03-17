@@ -11,6 +11,7 @@ import argparse
 from model_class.bytetrack.utils.visualize import plot_tracking
 from model_class.bytetrack.tracker.byte_tracker import BYTETracker
 from model_class.bytetrack.tracking_utils.timer import Timer
+from utils.plot_pose import draw_axis
 from control import VIDEOTRACK, FACEDECT, AGEGENDER, POSEFACE, STREAMCFG
 
 import cv2
@@ -78,7 +79,6 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
                      pose_model_path=POSEFACE.model_path,  
                      attribute_model_pth=AGEGENDER.model_path, 
                      source=0, 
-                     analysis=False, 
                      skip_frame=1, 
                      first_face=True):
 
@@ -91,9 +91,13 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
 
     # define model
     detector = OpenVINOFaceDetector(detector_model_pth, conf=FACEDECT.detect_conf)
-    analyzer = FaceAttribute(attribute_model_pth)
+
+    if attribute_model_pth:
+        analyzer = FaceAttribute(attribute_model_pth)
+    if pose_model_path:
+        pose_estimator = OpenVINOHeadPoseEstimator(pose_model_path)
+    
     face_service = FaceDetectionService
-    pose_estimator = OpenVINOHeadPoseEstimator(pose_model_path)
     tracker = BYTETracker(args, frame_rate=30)
 
     # Video capture
@@ -142,7 +146,7 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
             face = frame[y_min:y_max, x_min:x_max] 
             track_data.append(np.asarray([x_min, y_min, x_max, y_max, scores[idx]])) 
 
-            if analysis:    
+            if attribute_model_pth:    
                 # analysis face      
                 attribute = face_service.analyze(face, analyzer)
 
@@ -153,6 +157,10 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
                 text_y = y_min - text_size[1]
                 cv2.rectangle(frame, (text_x, text_y - 10), (text_x + text_size[0], text_y + text_size[1] + 10), (100, 10, 100), cv2.FILLED)
                 cv2.putText(frame, text, (x_min, y_min), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (100, 255, 50), 1, cv2.LINE_AA)
+
+            if pose_model_path:
+                yaw, pitch, roll = face_service.get_pose(face, pose_estimator)
+                frame = draw_axis(frame, yaw, pitch, roll, x_min, y_min, 50)
 
         # update track data by using bbox of face
         track_data = np.asarray(track_data)
