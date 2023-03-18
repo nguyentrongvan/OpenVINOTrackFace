@@ -160,7 +160,12 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
 
             if pose_model_path:
                 yaw, pitch, roll = face_service.get_pose(face, pose_estimator)
-                frame = draw_axis(frame, yaw, pitch, roll, x_min, y_min, 50)
+                x_center = x_min + (x_max - x_min)//2
+                y_center = y_min + (y_max - y_min)//2
+
+                size = (x_max - x_min)
+
+                frame = draw_axis(frame, yaw, pitch, roll, x_center, y_center, size)
 
         # update track data by using bbox of face
         track_data = np.asarray(track_data)

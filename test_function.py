@@ -52,9 +52,9 @@ def main():
     detector_model_pth='modelzoo/face-detection-0204/FP16-INT8_face-detection-0204.xml'
     attribute_model_pth='modelzoo/age-gender-recognition-retail-0013/FP32_age-gender-recognition-retail-0013.xml'
     head_pose_model_pth = 'modelzoo/head-pose-estimation-adas-0001/FP16/head-pose-estimation-adas-0001.xml'
-    source = 'data/sample/test_detect_02.mp4'
+    source = 'data/sample/test_pose_02.avi'
 
-    test_face_tracking(detector_model_pth, head_pose_model_pth, attribute_model_pth, source, 1, False)
+    test_face_tracking(detector_model_pth, None, attribute_model_pth, source, 1, False)
     
 if __name__ == '__main__':
     logger = getLoggerFile(datetime.now().strftime("%Y%m%d") + ".log", "a", "test_performance")

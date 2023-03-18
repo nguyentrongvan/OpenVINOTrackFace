@@ -1,7 +1,12 @@
 import cv2
 from math import *
+import numpy as np
 
 def draw_axis(img, yaw, pitch, roll, tdx=None, tdy=None, size=50):
+    yaw = radians(yaw)
+    pitch = radians(pitch)
+    roll = radians(roll)
+
     yaw = -yaw
 
     if tdx != None and tdy != None:
