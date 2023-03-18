@@ -10,7 +10,6 @@ import argparse
 
 from model_class.bytetrack.utils.visualize import plot_tracking
 from model_class.bytetrack.tracker.byte_tracker import BYTETracker
-from model_class.bytetrack.tracking_utils.timer import Timer
 from utils.plot_pose import draw_axis
 from control import VIDEOTRACK, FACEDECT, AGEGENDER, POSEFACE, STREAMCFG
 
@@ -82,6 +81,8 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
                      skip_frame=1, 
                      first_face=True):
 
+    log_name = f'tracking_{datetime.now().strftime("%Y%m%d")}.log'
+    logger = getLoggerFile(log_name, "a", "service_log")
     # get tracking arg
     args = make_parser().parse_args()
     results = []
@@ -91,10 +92,13 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
 
     # define model
     detector = OpenVINOFaceDetector(detector_model_pth, conf=FACEDECT.detect_conf)
+    logger.info(f'Load face detection model: model_path: {detector_model_pth}, confthresh = {FACEDECT.detect_conf}')
 
     if attribute_model_pth:
+        logger.info(f'Load face detection model: model_path: {attribute_model_pth}')
         analyzer = FaceAttribute(attribute_model_pth)
     if pose_model_path:
+        logger.info(f'Load face detection model: model_path: {pose_model_path}')
         pose_estimator = OpenVINOHeadPoseEstimator(pose_model_path)
     
     face_service = FaceDetectionService
@@ -102,6 +106,7 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
 
     # Video capture
     cap = cv2.VideoCapture(source)
+    logger.info(f'Video capture infor: width: {cap.get(3)} - height: {cap.get(4)}')
 
     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -135,6 +140,7 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
         
         # detect face in frame
         bboxes, scores, _ = face_service.detect(frame, detector)
+        logger.info(f'Detected {len(bboxes)} faces in frame')
 
         # if first face only get the first bbox
         if first_face and (len(bboxes) > 0):
@@ -144,11 +150,14 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
         for idx, bbox in enumerate(bboxes):
             x_min, y_min, x_max, y_max = bbox
             face = frame[y_min:y_max, x_min:x_max] 
+
+            logger.info(f'Detect result: {bbox}')
             track_data.append(np.asarray([x_min, y_min, x_max, y_max, scores[idx]])) 
 
             if attribute_model_pth:    
                 # analysis face      
                 attribute = face_service.analyze(face, analyzer)
+                logger.info(f'Face analysis: {attribute}')
 
                 # put result attribute face
                 text = f"Age: {attribute['age']} - Gender: {attribute['gender']}"
@@ -160,6 +169,8 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
 
             if pose_model_path:
                 yaw, pitch, roll = face_service.get_pose(face, pose_estimator)
+
+                logger.info(f'Headpose estimation: {yaw, pitch, roll}')
                 x_center = x_min + (x_max - x_min)//2
                 y_center = y_min + (y_max - y_min)//2
 

@@ -1,13 +1,11 @@
 from model_class.openvino.face_detector import OpenVINOFaceDetector
-from model_class.openvino.headpose_estimate import OpenVINOHeadPoseEstimator
-from model_class.openvino.face_attribute import FaceAttribute
 from model_class.recognition.face_embedding import FaceEmbedding
 from model_class.recognition.face_storage import FaceStorage
-from model_class.recognition.face_matching import FaceMatching
 
 from services.detection_services import FaceDetectionService
 from services.recognition_services import FaceRecognitionService, FaceRegisterService
 from services.face_tracking_video import face_tracking_video_worker as test_face_tracking
+from services.face_recognition_video import face_recognition_video_worker as test_face_recognition
 
 from loguru import logger
 
@@ -16,7 +14,6 @@ from logger import getLoggerFile
 from datetime import datetime
 
 def test_detection(detector_model_pth, image_path, true_face=5):
-    logger.info(f'Process image: {image_path}')
     detector = OpenVINOFaceDetector(detector_model_pth, conf=0.5)
     face_service = FaceDetectionService
   
@@ -52,10 +49,10 @@ def main():
     detector_model_pth='modelzoo/face-detection-0204/FP16-INT8_face-detection-0204.xml'
     attribute_model_pth='modelzoo/age-gender-recognition-retail-0013/FP32_age-gender-recognition-retail-0013.xml'
     head_pose_model_pth = 'modelzoo/head-pose-estimation-adas-0001/FP16/head-pose-estimation-adas-0001.xml'
-    source = 'data/sample/test_pose_02.avi'
+    source = 'data/sample/test_detect_01.mp4'
 
-    test_face_tracking(detector_model_pth, None, attribute_model_pth, source, 1, False)
+    # test_face_tracking(detector_model_pth, None, attribute_model_pth, source, 1, False)
+    test_face_recognition(detector_model_pth = detector_model_pth, source = source, threash=0.65, first_face=True)
     
 if __name__ == '__main__':
-    logger = getLoggerFile(datetime.now().strftime("%Y%m%d") + ".log", "a", "test_performance")
     main()

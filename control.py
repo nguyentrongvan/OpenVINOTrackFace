@@ -11,7 +11,7 @@ class FACEDECT:
     model_type = 'openvino'
     metric_match = 'cosine'
     embedding_model = 'Facenet512'
-    detect_conf = 0.9
+    detect_conf = 0.5
 
 class AGEGENDER:
     model_path = 'modelzoo/FP32_age-gender-recognition-retail-0013.xml'
