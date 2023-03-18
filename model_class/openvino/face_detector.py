@@ -37,7 +37,7 @@ class OpenVINOFaceDetector:
         outputs = self.exec_net.infer(feed_dict)
         return outputs
     
-    def get_bboxes(self, img, outputs):
+    def get_bboxes(self, img, outputs, square_face = True):
         bboxes = []
         scores = []
         
@@ -48,7 +48,20 @@ class OpenVINOFaceDetector:
                 x_min = int(x_min * img.shape[1])
                 x_max = int(x_max * img.shape[1])
                 y_min = int(y_min * img.shape[0])
-                y_max = int(y_max * img.shape[0])               
+                y_max = int(y_max * img.shape[0])   
+
+                if square_face:
+                    if (y_max - y_min) >= (x_max - x_min):
+                        max_lenght = (y_max - y_min) 
+                        padding = (max_lenght - (x_max - x_min)) // 2
+                        x_min -= padding
+                        x_max += padding
+                    else:
+                        max_lenght = (x_max - x_min) 
+                        padding = (max_lenght - (y_max - y_min)) // 2
+                        y_min -= padding
+                        y_max += padding
+                            
                 bboxes.append([x_min, y_min, x_max, y_max])
                 scores.append(conf)
         return bboxes, scores
