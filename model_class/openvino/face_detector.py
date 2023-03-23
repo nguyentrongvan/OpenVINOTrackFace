@@ -2,10 +2,10 @@ import cv2
 import numpy as np
 from pathlib import Path
 from openvino.inference_engine import IECore
-
+from control import FACEDECT
 
 class OpenVINOFaceDetector:
-    def __init__(self, model_pth, conf=0.1):
+    def __init__(self, model_pth, conf=FACEDECT.detect_conf):
         model_path = Path(model_pth)
         ie = IECore()
         self.conf = conf

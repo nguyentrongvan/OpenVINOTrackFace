@@ -77,6 +77,7 @@ def make_parser():
 def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path, 
                      pose_model_path=POSEFACE.model_path,  
                      attribute_model_pth=AGEGENDER.model_path, 
+                     detect_conf = 0.5,
                      source=0, 
                      skip_frame=1, 
                      first_face=True):
@@ -91,7 +92,7 @@ def face_tracking_video_worker(detector_model_pth=FACEDECT.model_path,
     logger.info(f'Process video: {source}')
 
     # define model
-    detector = OpenVINOFaceDetector(detector_model_pth, conf=FACEDECT.detect_conf)
+    detector = OpenVINOFaceDetector(detector_model_pth, conf=detect_conf)
     logger.info(f'Load face detection model: model_path: {detector_model_pth}, confthresh = {FACEDECT.detect_conf}')
 
     if attribute_model_pth:

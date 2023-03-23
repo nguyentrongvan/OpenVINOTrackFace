@@ -51,8 +51,8 @@ def main():
     head_pose_model_pth = 'modelzoo/head-pose-estimation-adas-0001/FP16/head-pose-estimation-adas-0001.xml'
     source = 'data/sample/test_detect_02.mp4'
 
-    # test_face_tracking(detector_model_pth, None, attribute_model_pth, source, 1, False)
-    test_face_recognition(detector_model_pth = detector_model_pth, source = source, threash=0.85, first_face=True)
+    test_face_tracking(detector_model_pth, None, attribute_model_pth, source, 1, False)
+    # test_face_recognition(detector_model_pth = detector_model_pth, source = source, threash=0.85, first_face=True)
     # test_resgister('data/iddb', detector_model_pth)
 
 if __name__ == '__main__':

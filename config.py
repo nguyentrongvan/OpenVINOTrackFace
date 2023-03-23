@@ -8,6 +8,9 @@ def getConfig(config_name):
 
 config = getConfig("config.ini") 
 
+##### Stream config
+streamCfg = config['STREAM']
+
 ##### Face detectection config
 faceModel = config['FACE_MODEL']
 
