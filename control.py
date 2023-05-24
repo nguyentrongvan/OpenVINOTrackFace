@@ -5,13 +5,15 @@ class STREAMCFG:
     width = 720
     height = 1280
     out_fps = 30
-    scale_ratio = 0.5
+    scale_ratio = 1.0
 
 class PPDETECT:
     # model_path = 'modelzoo/yolox/bytetrack_nano.onnx'
     model_path = 'modelzoo/person-detection-retail-0013/FP16/person-detection-retail-0013.xml'
-    detect_conf = 0.5
+    detect_conf = 0.1
     model_tyep = 'openvino'
+    confirm_entry_exit = ((0, 0.5), (1, 0.5))
+    min_frame_entryexit = 8
 
 class FACEDECT:
     model_path = 'modelzoo/FP16-INT8_face-detection-0204.xml'

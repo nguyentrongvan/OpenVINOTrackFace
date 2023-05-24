@@ -50,7 +50,7 @@ def main():
     detector_model_pth='modelzoo/face-detection-0204/FP16-INT8_face-detection-0204.xml'
     attribute_model_pth='modelzoo/age-gender-recognition-retail-0013/FP32_age-gender-recognition-retail-0013.xml'
     head_pose_model_pth = 'modelzoo/head-pose-estimation-adas-0001/FP16/head-pose-estimation-adas-0001.xml'
-    source = 'data/sample/test_detect_03.mp4'
+    source = 'data/sample/test_direction.mp4'
 
     test_person_tracking(source = source)
     # test_face_recognition(detector_model_pth = detector_model_pth, source = source, threash=0.85, first_face=True)

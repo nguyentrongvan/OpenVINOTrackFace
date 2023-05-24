@@ -4,6 +4,8 @@
 
 import cv2
 import numpy as np
+from collections import Counter
+
 
 __all__ = ["vis"]
 
@@ -49,7 +51,7 @@ def get_color(idx):
     return color
 
 
-def plot_tracking(image, tlwhs, obj_ids, ids2=None):
+def plot_tracking(image, tlwhs, obj_ids, directions={}, ids2=None):
     im = np.ascontiguousarray(np.copy(image))
     im_h, im_w = im.shape[:2]
 
@@ -71,6 +73,16 @@ def plot_tracking(image, tlwhs, obj_ids, ids2=None):
         cv2.rectangle(im, intbox[0:2], intbox[2:4], color=color, thickness=line_thickness)
         
         text = f"Track ID: {id_text}"
+        if directions:
+            direction = Counter(directions[obj_id]['directions']).most_common(1)[0][0]
+            if direction == 1:
+                text_direct = 'Down'
+            elif direction == -1:
+                text_direct = 'Up'
+            else: text_direct = ''
+
+            text += f" - Direction: {text_direct}"
+
         text_size, _ = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, 0.75, 1)
         text_x = intbox[0]
         text_y = intbox[1] - 40 - text_size[1]
