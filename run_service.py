@@ -1,5 +1,6 @@
 from services.face_tracking_video import face_tracking_video_worker
 from services.face_recognition_video import face_recognition_video_worker
+from services.face_shape_service import face_shape_regression_worker 
 
 from config import streamCfg, faceModel, attributeModel
 from control import FACEDECT
@@ -7,6 +8,8 @@ from control import FACEDECT
 def get_params():
     detector_model_pth=faceModel.get('modelPath')
     attribute_model_pth=attributeModel.get('modelPath')
+    landmark_model_pth=faceModel.get('landmark')
+
     source = 0 if streamCfg.get('streamURL') in ['0', '', None, 'local'] else streamCfg.get('streamURL')
     service_name = streamCfg.get('streamService')
     conf_setting = faceModel.get('confThresh')
@@ -31,7 +34,8 @@ def get_params():
             "detection_path" : detector_model_pth,
             "attribute_path"  :attribute_model_pth,
             "pose_path": None,
-            "recog_mectric": None
+            "recog_mectric": None,
+            "landmark_path": landmark_model_pth
         },
         "stream":
         {
@@ -63,8 +67,14 @@ def main():
                                             params['stream']['source'], \
                                             params['stream']['skip'], \
                                             params['stream']['first_face'])
+    elif service_name == 'shape':
+        service = face_shape_regression_worker(params['model']['detection_path'],\
+                                            params['stream']['source'], \
+                                            params['model']['landmark_path'],\
+                                            params['stream']['skip'], \
+                                            params['stream']['first_face'])
     else: 
-        raise(f'Stream service {service_name} is not supported. Please use "tracking" of "recognition"')
+        raise(f'Stream service {service_name} is not supported. Please use "tracking", "shape" or "recognition"')
 
 if __name__ == '__main__':
     main()

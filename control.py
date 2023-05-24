@@ -5,13 +5,21 @@ class STREAMCFG:
     width = 720
     height = 1280
     out_fps = 30
+    scale_ratio = 0.5
+
+class PPDETECT:
+    # model_path = 'modelzoo/yolox/bytetrack_nano.onnx'
+    model_path = 'modelzoo/person-detection-retail-0013/FP16/person-detection-retail-0013.xml'
+    detect_conf = 0.5
+    model_tyep = 'openvino'
 
 class FACEDECT:
-    model_path = ' modelzoo/FP16-INT8_face-detection-0204.xml'
+    model_path = 'modelzoo/FP16-INT8_face-detection-0204.xml'
     model_type = 'openvino'
     metric_match = 'cosine'
     embedding_model = 'Facenet512'
     detect_conf = 0.5
+    landmark = 'modelzoo/facial-landmarks-35-adas-0002/FP16/facial-landmarks-35-adas-0002.xml'
 
 class AGEGENDER:
     model_path = 'modelzoo/FP32_age-gender-recognition-retail-0013.xml'
