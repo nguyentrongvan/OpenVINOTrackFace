@@ -123,6 +123,7 @@ def person_tracking_video_worker(detector_model_pth=PPDETECT.model_path,
         x1 = int(PPDETECT.confirm_entry_exit[1][0] * width)
         y1 = int(PPDETECT.confirm_entry_exit[1][1] * height)
         gate_line = (x0, y0, x1, y1)
+    else: gate_line = None
     
     # create video writter
     out_name = os.path.join('result', f'{os.path.basename(source).split(".")[0]}_tracking_{datetime.now().strftime("%Y%m%d%H%M%S")}.avi')
