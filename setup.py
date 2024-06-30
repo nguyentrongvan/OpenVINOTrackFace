@@ -17,12 +17,8 @@ class PostInstallCommand(install):
 
 setup(
     name='openvino_trackface',
-    version='0.0.2',
+    version='0.0.1',
     include_package_data=True,
-    package_data={
-        'medface3D': ['data/demo/*.jpg', 'data/demo/*.png', 'data/demo/*.gif'],  # Include all jpg, png, and gif files,
-        'medface3D': ['data/sample/*.jpg', 'data/sample/*.png', 'data/sample/*.gif'],  # Include all jpg, png, and gif files
-    },
     packages=find_packages(),
     description= "Face tracking using OpenVINO Face detection and ByteTrack model",
     long_description = long_description,

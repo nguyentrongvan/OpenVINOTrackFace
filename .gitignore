@@ -1,0 +1,16 @@
+.vscode
+
+env
+dist
+build
+
+.idea
+**/__pycache__
+**/logs
+*.egg-info
+
+*/__pycache__
+*.log
+*.sqlite
+*.db
+*.csv
